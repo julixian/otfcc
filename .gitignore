@@ -23,12 +23,12 @@
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
 
 build/
 bin/
+obj/
 .vscode/
 _test
 

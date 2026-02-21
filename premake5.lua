@@ -1,3 +1,13 @@
+require('vstudio')
+
+premake.override(premake.vstudio.vc2010, "platformToolset", function(base, cfg)
+    if _ACTION == "vs2022" then
+        premake.vstudio.vc2010.element("PlatformToolset", nil, "ClangCL")
+    else
+        base(cfg)
+    end
+end)
+
 require "dep/premake-modules/xcode-alt"
 require "dep/premake-modules/ninja"
 
@@ -7,14 +17,10 @@ PATCH_VER = '4'
 
 function cbuildoptions()
 	-- Windows
-	filter "action:vs2015"
-		buildoptions { '/MP', '/Wall', '-Wno-unused-parameter', '-Qunused-arguments' }
-	filter { "action:vs2015", "platforms:x64" }
-		buildoptions {'-Wshorten-64-to-32'}
-	filter "action:vs2017"
-		buildoptions { '-Wall', '-Wno-unused-parameter', '-Qunused-arguments' }
-	filter { "action:vs2017", "platforms:x64" }
-		buildoptions {'-Wshorten-64-to-32'}
+	filter "action:vs2022"
+        buildoptions { '-Wall', '-Wno-unused-parameter', '-Qunused-arguments' }
+    filter { "action:vs2022", "platforms:x64" }
+        buildoptions { '-Wshorten-64-to-32' }
 	filter {"system:windows", "action:ninja"}
 		buildoptions { '-Wall', '-Wextra', '-Wno-unused-parameter', '-Qunused-arguments' }
 	-- Linux / OSX
@@ -30,10 +36,8 @@ function cbuildoptions()
 end
 
 function externcbuildoptions()
-	filter "action:vs2017"
-		buildoptions { '-Qunused-arguments', '-Wno-unused-const-variable' }
-	filter "action:vs2015"
-		buildoptions { '/MP', '-Qunused-arguments', '-Wno-unused-const-variable' }
+	filter "action:vs2022"
+        buildoptions { '-Qunused-arguments', '-Wno-unused-const-variable' }
 	filter {"system:windows", "action:ninja"}
 		buildoptions { '-Wno-unused-parameter', '-Qunused-arguments' }
 	filter "action:gmake or action:xcode4"
@@ -69,28 +73,17 @@ workspace "otfcc"
 		architecture "x64"
 	filter {}
 	
-	filter "action:vs2017"
+	filter "action:vs2022"
 		location "build/vs"
-		toolset "v141_clang_c2"
 		defines { '_CRT_SECURE_NO_WARNINGS', '_CRT_NONSTDC_NO_DEPRECATE' }
-		flags { "StaticRuntime" }
-		includedirs { "dep/polyfill-msvc" }
-	filter "action:vs2015"
-		location "build/vs"
-		toolset "msc-llvm-vs2014"
-		defines { '_CRT_SECURE_NO_WARNINGS', '_CRT_NONSTDC_NO_DEPRECATE' }
-		flags { "StaticRuntime" }
+		staticruntime "On"
 		includedirs { "dep/polyfill-msvc" }
 	filter "action:ninja"
 		location "build/ninja"
 	filter {"system:windows", "action:ninja"}
 		defines { '_CRT_SECURE_NO_WARNINGS', '_CRT_NONSTDC_NO_DEPRECATE' }
-		flags { "StaticRuntime" }
+		staticruntime "On"
 		includedirs { "dep/polyfill-msvc" }
-	filter "action:gmake"
-		location "build/gmake"
-	filter "action:xcode4"
-		location "build/xcode"
 	filter {}
 	
 	filter "configurations:Debug"
