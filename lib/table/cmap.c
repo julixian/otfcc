@@ -633,7 +633,6 @@ static uint8_t buildFormat14ForSelector(const table_cmap *cmap, unicode_t select
 	foreach_hash(item, cmap->uvs) {
 		unicode_t u = item->key.unicode;
 		if (item->key.selector != selector || u >= MAX_UNICODE) continue;
-		if (!item->glyph.name) continue;
 		glyphid_t uvsGID = item->glyph.index;
 		otfcc_GlyphHandle *g = table_iCmap.lookup(cmap, (int)u);
 		if (!g) {
