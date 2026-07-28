@@ -38,7 +38,7 @@ workspace "otfcc"
 	platforms { "x64", "x86" }
 	location "build/vs"
 	includedirs { "include", "dep/polyfill-msvc" }
-	staticruntime "On"
+	staticruntime "Off"
 
 	defines {
 		'_CARYLL_USE_PRE_SERIALIZED',
