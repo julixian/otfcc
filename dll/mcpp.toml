@@ -1,0 +1,18 @@
+[package]
+namespace = "otfcc"
+name = "dll"
+version = "0.10.4"
+license = "Apache-2.0"
+
+[dependencies]
+otfcc = { path = ".." }
+
+[build]
+default-profile = "release"
+sources = ["../src/otfccdll.c"]
+cflags = ["-Wall", "-Wno-unused-parameter"]
+
+[targets.otfccdll]
+kind = "shared"
+# 接口已显式导出，不导出字体处理库的内部符号。
+windows_auto_export = false

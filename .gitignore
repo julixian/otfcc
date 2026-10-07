@@ -27,6 +27,9 @@
 *.app
 
 build/
+target/
+compile_commands.json
+__pycache__/
 bin/
 obj/
 .vscode/

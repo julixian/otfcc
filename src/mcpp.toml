@@ -1,0 +1,22 @@
+[package]
+namespace = "otfcc"
+name = "tools"
+version = "0.10.4"
+license = "Apache-2.0"
+
+[dependencies]
+otfcc = { path = ".." }
+
+[build]
+default-profile = "release"
+sources = ["stopwatch.c"]
+cflags = ["-Wall", "-Wno-unused-parameter"]
+defines = ["MAIN_VER=0", "SECONDARY_VER=10", "PATCH_VER=4"]
+
+[targets.otfccdump]
+kind = "bin"
+main = "otfccdump.c"
+
+[targets.otfccbuild]
+kind = "bin"
+main = "otfccbuild.c"

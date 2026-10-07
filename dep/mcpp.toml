@@ -1,0 +1,24 @@
+[package]
+namespace = "otfcc"
+name = "deps"
+version = "0.10.4"
+license = "Apache-2.0"
+
+[features]
+default = ["pre-serialized"]
+pre-serialized = { defines = ["_CARYLL_USE_PRE_SERIALIZED"] }
+
+[build]
+default-profile = "release"
+c_standard = "c11"
+sources = ["extern/**/*.c"]
+include_dirs = ["../include/dep"]
+cflags = ["-Wno-unused-const-variable"]
+defines = ["_CRT_SECURE_NO_WARNINGS", "_CRT_NONSTDC_NO_DEPRECATE"]
+
+[target.windows.build]
+sources = ["polyfill-msvc/getopt.c"]
+include_dirs = ["polyfill-msvc"]
+
+[targets.deps]
+kind = "lib"

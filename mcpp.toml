@@ -1,0 +1,62 @@
+[workspace]
+members = ["dep", "src", "dll"]
+
+[workspace.package]
+version = "0.10.4"
+license = "Apache-2.0"
+
+[toolchain]
+windows = "llvm@22.1.8"
+
+[workspace.build]
+c_standard = "c11"
+cxx_runtime = "host-coupled"
+defines = ["_CRT_SECURE_NO_WARNINGS", "_CRT_NONSTDC_NO_DEPRECATE"]
+
+[profile.release]
+opt = 3
+debug = true
+lto = false
+cflags = ["-DNDEBUG"]
+
+[profile.dev]
+debug = true
+cflags = ["-DDEBUG", "-D_DEBUG"]
+
+# 标准库、CRT 和 Windows SDK 跟随本机默认 MSVC，架构由构建命令选择。
+[target.x86_64-windows-msvc]
+sysroot = "msvc@system"
+
+[target.i686-windows-msvc]
+sysroot = "msvc@system"
+
+# 根包只提供静态库，外部项目直接通过 path 引用本目录即可。
+[package]
+name = "otfcc"
+version = "0.10.4"
+license = "Apache-2.0"
+
+[dependencies]
+"otfcc.deps" = { path = "dep" }
+
+# 预序列化 JSON 是公开头文件的配置，随默认 feature 传给消费者。
+[features]
+default = ["pre-serialized"]
+pre-serialized = { defines = ["_CARYLL_USE_PRE_SERIALIZED"] }
+
+[build]
+default-profile = "release"
+sources = ["lib/**/*.c"]
+include_dirs = ["include", "src", "lib"]
+private_include_dirs = ["lib"]
+cflags = ["-Wall", "-Wno-unused-parameter"]
+defines = ["MAIN_VER=0", "SECONDARY_VER=10", "PATCH_VER=4"]
+
+[target.windows.build]
+ldflags = ["-lshell32"]
+
+[target.x86_64-windows-msvc.build]
+cflags = ["-Wshorten-64-to-32"]
+
+[targets.libotfcc]
+kind = "lib"
