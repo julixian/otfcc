@@ -16,7 +16,7 @@ defines = ["_CRT_SECURE_NO_WARNINGS", "_CRT_NONSTDC_NO_DEPRECATE"]
 [profile.release]
 opt = 3
 debug = true
-lto = false
+lto = true
 cflags = ["-DNDEBUG"]
 
 [profile.dev]
