@@ -1,11 +1,11 @@
 [package]
-namespace = "otfcc"
-name = "tools"
+namespace = "julixian"
+name = "otfcc-tools"
 version = "0.10.4"
 license = "Apache-2.0"
 
 [dependencies]
-otfcc = { path = ".." }
+julixian.otfcc = { path = ".." }
 
 [build]
 default-profile = "release"

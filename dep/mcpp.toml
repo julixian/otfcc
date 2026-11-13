@@ -1,6 +1,6 @@
 [package]
-namespace = "otfcc"
-name = "deps"
+namespace = "julixian"
+name = "otfcc-deps"
 version = "0.10.4"
 license = "Apache-2.0"
 
